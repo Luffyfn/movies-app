@@ -1,0 +1,17 @@
+.movie {
+    border: 1px yellow solid;
+    height: 20em;
+    margin: 10px;
+    padding: 10px;
+    font-family: fantasy;
+}
+
+.movie .image {
+    float: left;
+    margin-right: 10px;
+    height: 100%;
+}
+
+.movie p {
+    text-align: justify;
+}

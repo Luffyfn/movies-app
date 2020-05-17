@@ -1,12 +1,12 @@
 import React from 'react';
+import './MovieCard.css';
 
 const MovieCard = props => {
     return (
         <div className = "movie">
-            <h2>{props.title} ({props.year})</h2>
-            <img src = {props.image} alt = {props.title}/>
+            <img className = "image" src = {props.image} alt = {props.title}/>
+            <h2>{props.title} ({props.year}) | Rate: {props.rating}</h2>
             <p className = "description">{props.description}</p>
-            <p className = "rating">{props.rating}</p>
         </div>
     );
 };

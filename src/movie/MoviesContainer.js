@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import Modal from 'react-bootstrap/Modal'
 import MoviesList from './MoviesList';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Image from './Images/No-image.png';
+import './MoviesContainer.css';
+import Image from '../Images/No-image.png';
 
 const MoviesContainer = () => {
     const [moviesList,setMoviesList] = useState([
@@ -19,7 +20,7 @@ const MoviesContainer = () => {
             year: 2010,
             image: "https://image.tmdb.org/t/p/w220_and_h330_face/aej3LRUga5rhgkmRP6XMFw3ejbl.jpg",
             rating: 9,
-            description: "Dom Cobb is an experienced thief - the best there is in the perilous art of extraction: his specialty is to steal a person's most precious secrets, buried deep in his subconscious mind, while he is dreaming and his mind is particularly vulnerable. Highly sought after for his talents in the murky world of industrial espionage, Cobb has also become a fugitive hunted around the world who has lost everything he holds dear. But a final mission could allow him to return to his former life - provided he can accomplish the impossible: inception. Instead of stealing a dream, Cobb and his team must do the opposite: implant an idea in the mind of an individual. If they succeed, it could be the perfect crime. And yet, however methodical and gifted they are, nothing could have prepared Cobb and his partners for a formidable enemy that seems to be systematically one step ahead of them. An enemy that only Cobb could have suspected existed."
+            description: "Dom Cobb is an experienced thief - the best there is in the perilous art of extraction: his specialty is to steal a person's most precious secrets, buried deep in his subconscious mind, while he is dreaming and his mind is particularly vulnerable. Highly sought after for his talents in the murky world of industrial espionage, Cobb has also become a fugitive hunted around the world who has lost everything he holds dear. But a final mission could allow him to return to his former life - provided he can accomplish the impossible: inception. Instead of stealing a dream, Cobb and his team must do the opposite: implant an idea in the mind of an individual. If they succeed, it could be the perfect crime..."
         },
     
         {
@@ -45,28 +46,48 @@ const MoviesContainer = () => {
     const addMovie = (event) =>{
         event.preventDefault();
         let newMovie = {
-            title: event.title.value ? event.title.value : "No Title",
-            year: event.year.value ? event.year.value : 1980,
-            image: event.image.value ? event.image.value : {Image},
-            rating: event.rating.value ? event.rating.value : 1,
-            description: event.description.value ? event.description.value : "No Description"
+            title: title ? title : "No Title",
+            year: year ? year : 1980,
+            image: image ? image : {Image},
+            rating: rating ? rating : 0,
+            description: description ? description : "No Description"
         };
         return setMoviesList([...moviesList, newMovie]);
     }
 
+    const sortByItem = (item) => { 
+        const sortByMapped = (map,compare) => (a,b) => compare(map(a),map(b));
+        const byValue = (a,b) => {
+            if(a < b)
+                return -1;
+            if(a > b)
+                return 1
+            return 0;        
+        };
+        const toSort = e => e[item];
+        const bySort = sortByMapped(toSort, byValue);
+        const arraySorted = moviesList.sort(bySort);
+        return setMoviesList([...arraySorted]);
+    };
+
     return (
-        <div>
+        <div className = "container">
             <h1>Movies List</h1>
-            <p>We have {moviesList.length} movies</p>
-            <div className = "buttons">
-                <button className = "btn btn-success" onClick = {openModal}>+</button>
-                <button className = "btn btn-warning">Filter by Name</button>
-                <button className = "btn btn-warning">Filter by Rate</button>
+            <div className = "flex">
+                <p className = "moviesNumber">We have {moviesList.length} movies</p>
+                <div className = "buttons">
+                    <button className = "btn btn-success" onClick = {openModal}>+</button>
+                    <button className = "btn btn-warning" onClick = {() => sortByItem("title")}>Filter by Name</button>
+                    <button className = "btn btn-warning" onClick = {() => sortByItem("rating")}>Filter by Rate</button>
+                </div>
+            </div>  
+            
+            <div className = "moviesList">
+                <MoviesList movies = {moviesList} />
             </div>
 
-            <MoviesList movies = {moviesList} />
 
-            <Modal show = {modalShow} onhide = {closeModal}>
+            <Modal show = {modalShow} onHide = {closeModal}>
                 <div className = "modal-header">
                         <h2 className = "modal-title">ADDING NEW MOVIE</h2>
                         <button className = "btn btn-danger btn-sm" onClick = {closeModal}>x</button>
@@ -74,19 +95,18 @@ const MoviesContainer = () => {
                 <Modal.Body>
                     <form className = "form-group" onSubmit = {addMovie}>
                         <div className = "form-group">
-                            <label htmlFor = "title" class="col-sm-3 col-form-label">Title: </label>
+                            <label htmlFor = "title" className="col-sm-3 col-form-label">Title: </label>
                             <input 
                                 type = "text" 
                                 className = "form-control" 
                                 id = "title" 
-                                placeholder = "Title"
-                                value = {title} 
+                                placeholder = "Title" 
                                 onChange = {event => setTitle(event.target.value)}
                             />
                         </div>
                         
                         <div className = "form-group">
-                            <label hmtlFor = "year" class="col-sm-3 col-form-label">Year: </label>
+                            <label hmtlFor = "year" className="col-sm-3 col-form-label">Year: </label>
                             <input 
                                 type = "number" 
                                 className = "form-control" 
@@ -94,50 +114,46 @@ const MoviesContainer = () => {
                                 placeholder = "Year"
                                 min = "1980"
                                 max = "2020"
-                                value = {year}
                                 onChange = {event => setYear(event.target.value)}
                             />
                         </div>
                         
                         <div className = "form-group">
-                            <label htmlFor = "image" class="col-sm-3 col-form-label">Image: </label>
+                            <label htmlFor = "image" className="col-sm-3 col-form-label">Image: </label>
                             <input 
                                 type = "url" 
                                 className = "form-control" 
                                 id = "image" 
                                 placeholder = "image"
-                                value = {image}
                                 onChange = {event => setImage(event.target.value)}
                             />
                         </div>
                         
                         <div className = "form-group">
-                            <label htmlFor = "rate" class="col-sm-3 col-form-label">Rate: </label>
+                            <label htmlFor = "rate" className="col-sm-3 col-form-label">Rate: </label>
                             <input 
                                 type = "number" 
                                 className = "form-control" 
                                 id = "rate" 
                                 placeholder = "Rate"
-                                min = "1"
-                                max = "10"
-                                value = {rating}
-                                onChange = {event =>setRating(event.target.value)}
+                                min = "0"
+                                max = "9"
+                                onChange = {event => setRating(event.target.value)}
                             />
                         </div>
                         
                         <div className = "form-group">
-                            <label htmlFor = "description" class="col-sm-3 col-form-label">Description: </label>
+                            <label htmlFor = "description" className="col-sm-3 col-form-label">Description: </label>
                             <textarea 
                                 type = "text" 
                                 className = "form-control" 
                                 id = "description" 
                                 placeholder = "Description"
-                                value = {description}
                                 onChange = {event => setDescription(event.target.value)}
                             />
                         </div>
                         
-                        <button type = "submit" class="btn btn-primary">Add New Movie</button>                
+                        <button type = "submit" className="btn btn-primary" onClick = {closeModal}>Add New Movie</button>                
                     </form>
                 </Modal.Body>
             </Modal>
