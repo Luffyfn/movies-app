@@ -11,7 +11,7 @@ const MoviesContainer = () => {
             title: "Dr Dolittle",
             year: 2020,
             image: "https://image.tmdb.org/t/p/w220_and_h330_face/4DrmaV7MzzBrlc33CMUgDdS66uN.jpg",
-            rating: 8,
+            rating: 3,
             description: "After the loss of his wife seven years earlier, the eccentric Dr. John Dolittle, the famous doctor and veterinarian of Queen Victoria's England, isolates himself behind the walls of his manor house, with only his menagerie of exotic animals as his company. But when the young Queen falls seriously ill, Dr. Dolittle, initially reluctant, is forced to set sail for a mythical island in an epic adventure in search of a cure."
         },
     
@@ -19,7 +19,7 @@ const MoviesContainer = () => {
             title: "Inception",
             year: 2010,
             image: "https://image.tmdb.org/t/p/w220_and_h330_face/aej3LRUga5rhgkmRP6XMFw3ejbl.jpg",
-            rating: 9,
+            rating: 4,
             description: "Dom Cobb is an experienced thief - the best there is in the perilous art of extraction: his specialty is to steal a person's most precious secrets, buried deep in his subconscious mind, while he is dreaming and his mind is particularly vulnerable. Highly sought after for his talents in the murky world of industrial espionage, Cobb has also become a fugitive hunted around the world who has lost everything he holds dear. But a final mission could allow him to return to his former life - provided he can accomplish the impossible: inception. Instead of stealing a dream, Cobb and his team must do the opposite: implant an idea in the mind of an individual. If they succeed, it could be the perfect crime..."
         },
     
@@ -27,7 +27,7 @@ const MoviesContainer = () => {
             title: "Kick-Ass",
             year: 2010,
             image: "https://image.tmdb.org/t/p/w220_and_h330_face/jFtuQz74W6GQQ6auLI2jATctjA.jpg",
-            rating: 4,
+            rating: 1,
             description: "Dave Lizewski is a comic-book-filled teenager who lives only for this world of superheroes and incredible adventures. Determined to live his obsession in reality, he chooses a name for himself - Kick-Ass - makes himself a costume, and launches into a frantic battle against crime. In his delirium, he has only one problem: Kick-Ass doesn't have the slightest superpower? He's being chased by every bully in town. But Kick-Ass soon joins forces with other delusional copycats who are also determined to see justice done. Among them, an 11-year-old girl, Hit Girl and her father Big Daddy, but also Red Mist. The godfather of the local mafia, Frank D'Amico, will give them the opportunity to show what they are capable of..."
         }
     ]);
@@ -37,6 +37,8 @@ const MoviesContainer = () => {
     const [image, setImage] = useState ("");
     const [rating, setRating] = useState ("");
     const [description, setDescription] = useState ("");
+
+    const [searchValue, setSearchValue] = useState("");
 
     const [modalShow, setModalShow] = useState(false);
 
@@ -70,15 +72,35 @@ const MoviesContainer = () => {
         return setMoviesList([...arraySorted]);
     };
 
+        const searchInputChanges = (e) => {
+            setSearchValue(e.target.value);
+        }
+        
+        const filter = (e) => {
+            if(searchValue === e.title){
+                return true;  
+            }
+            else return "No Movie found";   
+          }
+
+        const filterByName = () => {
+            const arrayFiltred = moviesList.filter(filter);
+            console.log([...arrayFiltred]);
+        }
+          
+        
     return (
         <div className = "container">
             <h1>Movies List</h1>
             <div className = "flex">
                 <p className = "moviesNumber">We have {moviesList.length} movies</p>
+                
+                <input className = "form-control-lg" placeholder = "Search Movie" type = "text" onChange = {searchInputChanges}/>
+   
                 <div className = "buttons">
                     <button className = "btn btn-success" onClick = {openModal}>+</button>
-                    <button className = "btn btn-warning" onClick = {() => sortByItem("title")}>Filter by Name</button>
-                    <button className = "btn btn-warning" onClick = {() => sortByItem("rating")}>Filter by Rate</button>
+                    <button className = "btn btn-warning" onClick = {filterByName}>Filter by Name</button>
+                    <button className = "btn btn-warning">Filter by Rate</button>
                 </div>
             </div>  
             
@@ -137,7 +159,7 @@ const MoviesContainer = () => {
                                 id = "rate" 
                                 placeholder = "Rate"
                                 min = "0"
-                                max = "9"
+                                max = "5"
                                 onChange = {event => setRating(event.target.value)}
                             />
                         </div>
