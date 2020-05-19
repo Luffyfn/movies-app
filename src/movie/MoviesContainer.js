@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import Rating from './Rating';
 import Modal from 'react-bootstrap/Modal'
 import MoviesList from './MoviesList';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -11,7 +12,7 @@ const MoviesContainer = () => {
             title: "Dr Dolittle",
             year: 2020,
             image: "https://image.tmdb.org/t/p/w220_and_h330_face/4DrmaV7MzzBrlc33CMUgDdS66uN.jpg",
-            rating: 3,
+            rating: 4,
             description: "After the loss of his wife seven years earlier, the eccentric Dr. John Dolittle, the famous doctor and veterinarian of Queen Victoria's England, isolates himself behind the walls of his manor house, with only his menagerie of exotic animals as his company. But when the young Queen falls seriously ill, Dr. Dolittle, initially reluctant, is forced to set sail for a mythical island in an epic adventure in search of a cure."
         },
     
@@ -19,7 +20,7 @@ const MoviesContainer = () => {
             title: "Inception",
             year: 2010,
             image: "https://image.tmdb.org/t/p/w220_and_h330_face/aej3LRUga5rhgkmRP6XMFw3ejbl.jpg",
-            rating: 4,
+            rating: 5,
             description: "Dom Cobb is an experienced thief - the best there is in the perilous art of extraction: his specialty is to steal a person's most precious secrets, buried deep in his subconscious mind, while he is dreaming and his mind is particularly vulnerable. Highly sought after for his talents in the murky world of industrial espionage, Cobb has also become a fugitive hunted around the world who has lost everything he holds dear. But a final mission could allow him to return to his former life - provided he can accomplish the impossible: inception. Instead of stealing a dream, Cobb and his team must do the opposite: implant an idea in the mind of an individual. If they succeed, it could be the perfect crime..."
         },
     
@@ -61,41 +62,23 @@ const MoviesContainer = () => {
             setSearchValue(e.target.value);
         }
         
-        console.log(searchValue.length);
-
-        const filterTitle = (e) => {
-            const t = e.title.includes(searchValue);
-            return t;
-            } 
-        
-        const filterRate = (e) => {
-            const r = (e.rating == searchValue);
-            return r;
-        }
-        
-        const filterByItem = (item) => {
-            const arrayFiltred = moviesList.filter(item);
-                return setMoviesList([...arrayFiltred]);
-        }
-          
-        
     return (
         <div className = "container">
             <h1>Movies List</h1>
             <div className = "flex">
-                <p className = "moviesNumber">We have {moviesList.length} movies</p>
-                
                 <input value={searchValue} className = "form-control-lg" placeholder = "Search Movie" type = "text" onChange = {searchInputChanges}/>
    
                 <div className = "buttons">
-                    <button className = "btn btn-success" onClick = {openModal}>+</button>
-                    <button className = "btn btn-warning" onClick = {() => filterByItem(filterTitle)}>Filter by Name</button>
-                    <button className = "btn btn-warning" onClick = {() => filterByItem(filterRate)}>Filter by Rate</button>
+                    <button className = "btn btn-success btn-lg" onClick = {openModal}>Add Movie</button>
                 </div>
             </div>  
             
             <div className = "moviesList">
-                <MoviesList movies = {moviesList} />
+                <MoviesList 
+                    movies = {
+                        moviesList.filter(item => item.title.indexOf(searchValue) !== -1 || item.rating.toString().indexOf(searchValue) !== -1)
+                    } 
+                />
             </div>
 
 
