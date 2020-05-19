@@ -57,35 +57,25 @@ const MoviesContainer = () => {
         return setMoviesList([...moviesList, newMovie]);
     }
 
-    const sortByItem = (item) => { 
-        const sortByMapped = (map,compare) => (a,b) => compare(map(a),map(b));
-        const byValue = (a,b) => {
-            if(a < b)
-                return -1;
-            if(a > b)
-                return 1
-            return 0;        
-        };
-        const toSort = e => e[item];
-        const bySort = sortByMapped(toSort, byValue);
-        const arraySorted = moviesList.sort(bySort);
-        return setMoviesList([...arraySorted]);
-    };
-
         const searchInputChanges = (e) => {
             setSearchValue(e.target.value);
         }
         
-        const filter = (e) => {
-            if(searchValue === e.title){
-                return true;  
-            }
-            else return "No Movie found";   
-          }
+        console.log(searchValue.length);
 
-        const filterByName = () => {
-            const arrayFiltred = moviesList.filter(filter);
-            console.log([...arrayFiltred]);
+        const filterTitle = (e) => {
+            const t = e.title.includes(searchValue);
+            return t;
+            } 
+        
+        const filterRate = (e) => {
+            const r = (e.rating == searchValue);
+            return r;
+        }
+        
+        const filterByItem = (item) => {
+            const arrayFiltred = moviesList.filter(item);
+                return setMoviesList([...arrayFiltred]);
         }
           
         
@@ -95,12 +85,12 @@ const MoviesContainer = () => {
             <div className = "flex">
                 <p className = "moviesNumber">We have {moviesList.length} movies</p>
                 
-                <input className = "form-control-lg" placeholder = "Search Movie" type = "text" onChange = {searchInputChanges}/>
+                <input value={searchValue} className = "form-control-lg" placeholder = "Search Movie" type = "text" onChange = {searchInputChanges}/>
    
                 <div className = "buttons">
                     <button className = "btn btn-success" onClick = {openModal}>+</button>
-                    <button className = "btn btn-warning" onClick = {filterByName}>Filter by Name</button>
-                    <button className = "btn btn-warning">Filter by Rate</button>
+                    <button className = "btn btn-warning" onClick = {() => filterByItem(filterTitle)}>Filter by Name</button>
+                    <button className = "btn btn-warning" onClick = {() => filterByItem(filterRate)}>Filter by Rate</button>
                 </div>
             </div>  
             
