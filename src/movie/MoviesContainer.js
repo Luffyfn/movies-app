@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import Modal from 'react-bootstrap/Modal';
-import {FaStar} from 'react-icons/fa';
+import SearchByRate from './SearchByRate';
 import MoviesList from './MoviesList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './MoviesContainer.css';
 import Image from '../Images/No-image.png';
+
+                            /******************** MoviesList ********************/
 
 const MoviesContainer = () => {
     const [moviesList,setMoviesList] = useState([
@@ -33,21 +35,29 @@ const MoviesContainer = () => {
         }
     ]);
 
-    const [title, setTitle] = useState ("");
+
+                            /******************** Movie States ********************/
+    
+                            const [title, setTitle] = useState ("");
     const [year, setYear] = useState ("");
     const [image, setImage] = useState ("");
     const [rating, setRating] = useState ("");
     const [description, setDescription] = useState ("");
 
-    const [rate, setRate] = useState(0);
 
+                            /******************** Search State ********************/     
+    
+                            const [searchByRate, setSearchByRate] = useState (0);
     const [searchValue, setSearchValue] = useState("");
 
-    const [modalShow, setModalShow] = useState(false);
 
+                            /******************** Display Modal ********************/     
+    const [modalShow, setModalShow] = useState(false);
     const openModal = () => setModalShow(true);;
     const closeModal = () => setModalShow(false);
 
+
+                            /******************** Add New Movie ********************/       
     const addMovie = (event) =>{
         event.preventDefault();
         let newMovie = {
@@ -60,41 +70,23 @@ const MoviesContainer = () => {
         return setMoviesList([...moviesList, newMovie]);
     }
 
+
+                            /******************** Input Change ********************/         
+        
         const searchInputChanges = (e) => {
             setSearchValue(e.target.value);
         }
-
-        const Rate = () => {
-            return (
-                <div>
-                    {[...Array(5)].map((star, key) => {
-                        const ratingValue = key + 1;
-                        return (
-                            <label key = {key}>
-                                <input 
-                                    type = "radio"
-                                    name = "rating"
-                                    value = {ratingValue}
-                                    onClick ={() => setRate(ratingValue)}
-                                >
-                                </input>
-
-                                <FaStar 
-                                    className = "star" 
-                                    size = {35}
-                                    color = {ratingValue <= rate ? "yellow" : "white"}
-                                >    
-                                </FaStar> 
-                            </label>
-                        );
-                    })}   
-                </div>
-            );
-        }
-        
+        console.log(searchByRate);
+     
+                            /******************** App Return ********************/     
+    
     return (
         <div className = "container">
             <h1>Movies List</h1>
+
+
+                            {/******************** Input Search and Buttons ********************/}                 
+            
             <div className = "flex">
                 <input 
                     value={searchValue} 
@@ -105,9 +97,10 @@ const MoviesContainer = () => {
                 />
                 
                 <div className = "rate">
-                    <Rate/>
+                    <SearchByRate setSearchByRate = {setSearchByRate}/>
+                   
                 </div>
-
+                
                 <div className = "buttons">
                     <button className = "btn btn-success btn-lg" onClick = {openModal}>Add Movie</button>
                 </div>
@@ -116,12 +109,16 @@ const MoviesContainer = () => {
             <div className = "moviesList">
                 <MoviesList 
                     movies = {
-                        moviesList.filter(item => item.title.indexOf(searchValue) !== -1 || item.rating == rate)
+                        (searchValue === "" && searchByRate === 0) ? moviesList : (searchValue && searchByRate === 0) 
+                        ? moviesList.filter(item => item.title.toLowerCase().indexOf(searchValue) !== -1) 
+                        : moviesList.filter(item => item.rating === searchByRate)  
                     } 
                 />
             </div>
 
 
+                            {/******************** Modal ********************/}     
+            
             <Modal show = {modalShow} onHide = {closeModal}>
                 <div className = "modal-header">
                         <h2 className = "modal-title">ADDING NEW MOVIE</h2>
