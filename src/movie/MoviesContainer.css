@@ -27,9 +27,9 @@ body{
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-around;
-    width: 40%;
+    width: 55%;
     position: relative;
-    left: 30%;
+    left: 20%;
     margin: 10px;
 }
 
@@ -37,3 +37,14 @@ body{
     display: flex;
     flex-direction: column;
 }
+
+input[type = "radio"] {
+    display: none;
+}
+
+.star {
+    margin: 2px;
+    cursor: pointer;
+    transition: none;
+}
+

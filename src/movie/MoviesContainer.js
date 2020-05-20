@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import Rating from './Rating';
-import Modal from 'react-bootstrap/Modal'
+import Modal from 'react-bootstrap/Modal';
+import {FaStar} from 'react-icons/fa';
 import MoviesList from './MoviesList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './MoviesContainer.css';
@@ -39,6 +39,8 @@ const MoviesContainer = () => {
     const [rating, setRating] = useState ("");
     const [description, setDescription] = useState ("");
 
+    const [rate, setRate] = useState(0);
+
     const [searchValue, setSearchValue] = useState("");
 
     const [modalShow, setModalShow] = useState(false);
@@ -61,13 +63,51 @@ const MoviesContainer = () => {
         const searchInputChanges = (e) => {
             setSearchValue(e.target.value);
         }
+
+        const Rate = () => {
+            return (
+                <div>
+                    {[...Array(5)].map((star, key) => {
+                        const ratingValue = key + 1;
+                        return (
+                            <label key = {key}>
+                                <input 
+                                    type = "radio"
+                                    name = "rating"
+                                    value = {ratingValue}
+                                    onClick ={() => setRate(ratingValue)}
+                                >
+                                </input>
+
+                                <FaStar 
+                                    className = "star" 
+                                    size = {35}
+                                    color = {ratingValue <= rate ? "yellow" : "white"}
+                                >    
+                                </FaStar> 
+                            </label>
+                        );
+                    })}   
+                </div>
+            );
+        }
         
     return (
         <div className = "container">
             <h1>Movies List</h1>
             <div className = "flex">
-                <input value={searchValue} className = "form-control-lg" placeholder = "Search Movie" type = "text" onChange = {searchInputChanges}/>
-   
+                <input 
+                    value={searchValue} 
+                    className = "form-control-lg" 
+                    placeholder = "Search Movie" 
+                    type = "text" 
+                    onChange = {searchInputChanges}
+                />
+                
+                <div className = "rate">
+                    <Rate/>
+                </div>
+
                 <div className = "buttons">
                     <button className = "btn btn-success btn-lg" onClick = {openModal}>Add Movie</button>
                 </div>
@@ -76,7 +116,7 @@ const MoviesContainer = () => {
             <div className = "moviesList">
                 <MoviesList 
                     movies = {
-                        moviesList.filter(item => item.title.indexOf(searchValue) !== -1 || item.rating.toString().indexOf(searchValue) !== -1)
+                        moviesList.filter(item => item.title.indexOf(searchValue) !== -1 || item.rating == rate)
                     } 
                 />
             </div>

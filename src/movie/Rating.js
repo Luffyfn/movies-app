@@ -1,21 +1,20 @@
-import React,{useState} from 'react';
+import React from 'react';
 import {FaStar} from 'react-icons/fa';
 
-function Rating(props) {
+const Rating = (props) => {
     return (
         <div>
             {[...Array(5)].map((star, key) => {
                 const ratingValue = key + 1;
                 return (
-                    <FaStar 
-                        className = "star" 
+                    <FaStar key = {key}
                         size = {30}
                         color = {ratingValue <= props.rate ? "yellow" : "white"}
                     >    
-                    </FaStar>     
-            )})}
+                    </FaStar> 
+            )})}   
         </div>
     )
 }
 
-export default Rating
+export default Rating;
