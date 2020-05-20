@@ -98,11 +98,7 @@ const MoviesContainer = () => {
                 
                 <div 
                     className = "btn btn-primary btn-lg" 
-                    onClick = {() => {
-                        setSearchByRate(0)
-                        setRating(0)}
-                        
-                    } 
+                    onClick = {() => setSearchByRate(0)} 
                 >
                 Update</div>
 
@@ -120,7 +116,7 @@ const MoviesContainer = () => {
                     movies = {
                         (searchValue === "" && searchByRate === 0) ? moviesList : (searchValue && searchByRate === 0) 
                         ? moviesList.filter(item => item.title.toLowerCase().indexOf(searchValue) !== -1) 
-                        : moviesList.filter(item => item.rating === searchByRate)  
+                        : moviesList.filter(item => item.rating == searchByRate)  
                     } 
                 />
             </div>
