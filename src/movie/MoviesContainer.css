@@ -27,7 +27,7 @@ body{
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-around;
-    width: 55%;
+    width: 65%;
     position: relative;
     left: 20%;
     margin: 10px;

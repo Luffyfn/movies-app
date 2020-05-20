@@ -30,7 +30,7 @@ const MoviesContainer = () => {
             title: "Kick-Ass",
             year: 2010,
             image: "https://image.tmdb.org/t/p/w220_and_h330_face/jFtuQz74W6GQQ6auLI2jATctjA.jpg",
-            rating: 1,
+            rating: 2,
             description: "Dave Lizewski is a comic-book-filled teenager who lives only for this world of superheroes and incredible adventures. Determined to live his obsession in reality, he chooses a name for himself - Kick-Ass - makes himself a costume, and launches into a frantic battle against crime. In his delirium, he has only one problem: Kick-Ass doesn't have the slightest superpower? He's being chased by every bully in town. But Kick-Ass soon joins forces with other delusional copycats who are also determined to see justice done. Among them, an 11-year-old girl, Hit Girl and her father Big Daddy, but also Red Mist. The godfather of the local mafia, Frank D'Amico, will give them the opportunity to show what they are capable of..."
         }
     ]);
@@ -47,7 +47,7 @@ const MoviesContainer = () => {
 
                             /******************** Search State ********************/     
     
-                            const [searchByRate, setSearchByRate] = useState (0);
+    const [searchByRate, setSearchByRate] = useState (0);
     const [searchValue, setSearchValue] = useState("");
 
 
@@ -64,7 +64,7 @@ const MoviesContainer = () => {
             title: title ? title : "No Title",
             year: year ? year : 1980,
             image: image ? image : {Image},
-            rating: rating ? rating : 0,
+            rating: rating ? rating : 1,
             description: description ? description : "No Description"
         };
         return setMoviesList([...moviesList, newMovie]);
@@ -89,16 +89,25 @@ const MoviesContainer = () => {
             
             <div className = "flex">
                 <input 
-                    value={searchValue} 
+                    value = {searchValue} 
                     className = "form-control-lg" 
                     placeholder = "Search Movie" 
                     type = "text" 
                     onChange = {searchInputChanges}
                 />
                 
+                <div 
+                    className = "btn btn-primary btn-lg" 
+                    onClick = {() => {
+                        setSearchByRate(0)
+                        setRating(0)}
+                        
+                    } 
+                >
+                Update</div>
+
                 <div className = "rate">
-                    <SearchByRate setSearchByRate = {setSearchByRate}/>
-                   
+                    <SearchByRate setSearchByRate = {setSearchByRate}/>   
                 </div>
                 
                 <div className = "buttons">
@@ -168,7 +177,7 @@ const MoviesContainer = () => {
                                 className = "form-control" 
                                 id = "rate" 
                                 placeholder = "Rate"
-                                min = "0"
+                                min = "1"
                                 max = "5"
                                 onChange = {event => setRating(event.target.value)}
                             />
